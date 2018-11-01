@@ -15,9 +15,9 @@ circle trivial(list<point> l){
 
   for(int i = 0; i < n; i++) v.push_back(l.pop());
 
-  for(int i = 0; i < n; i++){
-    for(int j = 0; j < n; j++){
-      for(int k = 0; k < n; k++){
+  for(int i = 0; i < n-2; i++){
+    for(int j = i+1; j < n-1; j++){
+      for(int k = j+1; k < n; k++){
         
         circle CC = circle(v[i],v[j],v[k]);
         int flag = 1;
@@ -30,6 +30,8 @@ circle trivial(list<point> l){
       }
     }
   }
+  circle C;
+  return C;
 }
 
 circle f3(list<point> l, point p, point q){
