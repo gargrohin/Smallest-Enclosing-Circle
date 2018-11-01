@@ -2,9 +2,12 @@
 #include <LEDA/core/list.h>
 #include <LEDA/geo/point.h>
 #include <LEDA/geo/circle.h>
-
+#include <time.h> 
 using namespace leda;
 using namespace std;
+
+// int rand();
+
 
 circle f3(list<point> l, point p, point q){
   int n = l.length();
@@ -14,7 +17,7 @@ circle f3(list<point> l, point p, point q){
   circle C = circle(cent,p);
   for(i=0;i<n;i++){
     r=l.pop();
-    if(!(C.inside(r)||C.contains(r))){
+    if(!C.inside(r)){
       C = circle(p,q,r);
     }
   }
@@ -33,7 +36,7 @@ circle f2(list<point> l, point p){
       point cent = midpoint(p,q);
       C=circle(cent,p);
     }
-    if(!(C.inside(q)||C.contains(q))){
+    if(!C.inside(q)){
       C = f3(l2,p,q);
     }
     l2.push(q);
@@ -41,13 +44,17 @@ circle f2(list<point> l, point p){
   return C;
 }
 
-circle f1(list<point> l, circle C){
+circle f1(list<point> l){
   int n = l.length();
   int i=0;
   list<point> l2;
+  circle C;
   for(i=0;i<n;i++){
     point p = l.pop();
-    if(!(C.inside(p)||C.contains(p))){
+    if(i==0){
+      C = circle(p);
+    }
+    if(!C.inside(p)){
       C = circle(p);
       C = f2(l2,p);
     }
@@ -59,7 +66,23 @@ circle f1(list<point> l, circle C){
 
 int main()
 {
-  int i=0;
-  cout << "this is working in c++\n";
+  srand (time(NULL));
+  list<point> l;
+  for(int i=0; i< 20; i++){
+    int a = rand()%20;
+    int b = rand()%20;
+    point p(a,b);
+    l.push(p);
+  }
+  l.permute();
+  cout<<l<<endl;
+  circle C = f1(l);
+  cout << " The smallest circle is  : \n";
+  cout<<C.center()<<" "<<C.radius()<<endl;
+  /*C=circle(l.pop(),l.pop(),l.pop());
+  point a = l.pop();
+  if(C.inside(a)){
+      cout<<C<<endl;
+  }*/
   return 0;
 }
