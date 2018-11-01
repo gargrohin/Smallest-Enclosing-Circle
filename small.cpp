@@ -104,8 +104,7 @@ int main(){
     point p(a,b);
     l.push(p);
   }
-  cout<<l<<endl;
-  //l.permute();
+  l.permute();
   // cout<<l<<endl;
   cout << "There are "<< npoints << " randomly generated points.\n";
   auto t1 = std::chrono::high_resolution_clock::now();
