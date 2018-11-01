@@ -18,12 +18,17 @@ circle trivial(list<point> l){
   for(int i = 0; i < n-2; i++){
     for(int j = i+1; j < n-1; j++){
       for(int k = j+1; k < n; k++){
-        
+        if(orientation(v[i],v[j],v[k])==0){
+          break;
+        }
         circle CC = circle(v[i],v[j],v[k]);
         int flag = 1;
         
         for(int m = 0; m < n; m++){
-          if(CC.outside(v[m])) flag = 0;
+          if(CC.outside(v[m])){ 
+            flag = 0;
+            break;
+          }
         }
         
         if(flag) return CC;
@@ -61,7 +66,7 @@ circle f2(list<point> l, point p){
       point cent = midpoint(p,q);
       C=circle(cent,p);
     }
-    if(!C.inside(q) && !C.contains(q)){
+    if(!C.inside(q)){
       C = f3(l2,p,q);
     }
     l2.push(q);
@@ -79,7 +84,7 @@ circle f1(list<point> l){
     if(i==0){
       C = circle(p);
     }
-    if(!C.inside(p) && !C.contains(p)){
+    if(!C.inside(p) ){
       C = circle(p);
       C = f2(l2,p);
     }
@@ -92,14 +97,15 @@ circle f1(list<point> l){
 int main(){
   srand (time(NULL));
   list<point> l; 
-  int npoints = 10000000;
+  int npoints = 100;
   for(int i=0; i< npoints; i++){
     int a = rand()%20;
     int b = rand()%20;
     point p(a,b);
     l.push(p);
   }
-  l.permute();
+  cout<<l<<endl;
+  //l.permute();
   // cout<<l<<endl;
   cout << "There are "<< npoints << " randomly generated points.\n";
   auto t1 = std::chrono::high_resolution_clock::now();
