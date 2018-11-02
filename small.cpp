@@ -135,7 +135,7 @@ circle f1(list<point> l){
 int main(){
   srand (time(NULL));
   list<point> l; 
-  int npoints = 5;
+  int npoints = 500;
   for(int i=0; i< npoints; i++){
     int a = rand()%20000;
     int b = rand()%20000;
@@ -143,7 +143,7 @@ int main(){
     l.push(p);
   }
   l.permute();
-  cout<<l<<endl;
+  //cout<<l<<endl;
   cout << "There are "<< npoints << " randomly generated points.\n\n";
   auto t1 = std::chrono::high_resolution_clock::now();
   circle C = f1(l);
