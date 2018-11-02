@@ -137,8 +137,8 @@ int main(){
   list<point> l; 
   int npoints = 5;
   for(int i=0; i< npoints; i++){
-    int a = rand()%20;
-    int b = rand()%20;
+    int a = rand()%20000;
+    int b = rand()%20000;
     point p(a,b);
     l.push(p);
   }
