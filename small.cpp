@@ -5,6 +5,8 @@
 #include <LEDA/geo/circle.h>
 #include <time.h> 
 #include <chrono>
+#define Debug(x) cout << "> " << #x << " : " << x << "\n";
+#define For(i,a,b) for(int i=(a);i<(b);i++)
 using namespace leda;
 using namespace std;
 
@@ -12,35 +14,42 @@ using namespace std;
 circle trivial(list<point> l){
   int n = l.length();
   std::vector<point> v;
-
+  // Debug(n)
   for(int i = 0; i < n; i++) v.push_back(l.pop());
-
+  circle smallestC;double rmin = 1000000.0;
   for(int i = 0; i < n-2; i++){
     for(int j = i+1; j < n-1; j++){
       for(int k = j+1; k < n; k++){
         if(orientation(v[i],v[j],v[k])==0){
-          break;
+          continue;
         }
         circle CC = circle(v[i],v[j],v[k]);
         int flag = 1;
-        
+        // cout << i << " " << j << " " << k<<"\n";
+        // cout << CC<<"\n";
         for(int m = 0; m < n; m++){
           if(CC.outside(v[m])){ 
             flag = 0;
             break;
           }
         }
-        
-        if(flag) return CC;
+        if(flag){
+          if(CC.radius() < rmin){
+            rmin = CC.radius();
+            smallestC = CC;
+          }
+        }
       }
     }
   }
-  circle C;
-  return C;
+  return smallestC;
 }
 
 circle f3(list<point> l, point p, point q){
   int n = l.length();
+  // Debug(n)
+  // Debug(p)
+  // Debug(q)
   int i=0;
   point r;
   point cent = midpoint(p,q);
@@ -56,6 +65,8 @@ circle f3(list<point> l, point p, point q){
 
 circle f2(list<point> l, point p){
   int n = l.length();
+  // Debug(n)
+  // Debug(p)
   int i=0;
   point q;
   circle C;
@@ -64,7 +75,9 @@ circle f2(list<point> l, point p){
     q=l.pop();
     if(i==0){
       point cent = midpoint(p,q);
-      C=circle(cent,p);
+      C=circle(cent,p);//circle with center cent passing thru p
+      l2.push(q);
+      continue;
     }
     if(!C.inside(q)){
       C = f3(l2,p,q);
@@ -83,6 +96,8 @@ circle f1(list<point> l){
     point p = l.pop();
     if(i==0){
       C = circle(p);
+      l2.push(p);
+      continue;
     }
     if(!C.inside(p) ){
       C = circle(p);
@@ -90,6 +105,7 @@ circle f1(list<point> l){
     }
     l2.push(p);
   }
+  cout << C<<" is randm circle\n";
   return C;
 }
 
@@ -97,7 +113,7 @@ circle f1(list<point> l){
 int main(){
   srand (time(NULL));
   list<point> l; 
-  int npoints = 100;
+  int npoints = 5;
   for(int i=0; i< npoints; i++){
     int a = rand()%20;
     int b = rand()%20;
@@ -105,29 +121,33 @@ int main(){
     l.push(p);
   }
   l.permute();
-  // cout<<l<<endl;
-  cout << "There are "<< npoints << " randomly generated points.\n";
+  cout<<l<<endl;
+  cout << "There are "<< npoints << " randomly generated points.\n\n";
   auto t1 = std::chrono::high_resolution_clock::now();
   circle C = f1(l);
   auto t2 = std::chrono::high_resolution_clock::now();
-  std::cout << "Randomized Algo took "
-            << std::chrono::duration_cast<std::chrono::milliseconds>(t2-t1).count()
-            << " milliseconds\n";
   
-  cout << " The smallest circle is  : \n";
+  
+  cout << " The random smallest circle is  : \n";
   cout<<C.center()<<" "<<C.radius()<<endl;
 
 
   auto t11 = std::chrono::high_resolution_clock::now();
   circle AC = trivial(l);
   auto t21 = std::chrono::high_resolution_clock::now();
+  
+  
+  cout << "\n The actual smallest circle is  : \n";
+  cout<<AC.center()<<" "<<AC.radius()<<endl;
+  cout << "It passes thru : "<< AC<<"\n\n";
+
+  std::cout << "Randomized Algo took "
+            << std::chrono::duration_cast<std::chrono::milliseconds>(t2-t1).count()
+            << " milliseconds\n";
+
   std::cout << "Trivial O(n^4) took "
             << std::chrono::duration_cast<std::chrono::milliseconds>(t21-t11).count()
             << " milliseconds\n";
-  
-  cout << " The actual smallest circle is  : \n";
-  cout<<AC.center()<<" "<<AC.radius()<<endl;
-  
   // // point p1,p2,p3;
   // point p1(1,2),p2(3,7),p3(6,13);
   // circle CC = circle(p1,p2,p3);
