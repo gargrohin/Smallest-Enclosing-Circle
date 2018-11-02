@@ -42,21 +42,43 @@ circle trivial(list<point> l){
       }
     }
   }
+  for(int i = 0; i < n-2; i++){
+    for(int j = i+1; j < n-1; j++){
+    	point cent = midpoint(v[i],v[j]);
+        circle CC = circle(cent,v[i]);
+        int flag = 1;
+        // cout << i << " " << j << " " << k<<"\n";
+        // cout << CC<<"\n";
+        for(int m = 0; m < n; m++){
+          if(CC.outside(v[m])){ 
+            flag = 0;
+            break;
+          }
+        }
+        if(flag){
+          if(CC.radius() < rmin){
+            rmin = CC.radius();
+            smallestC = CC;
+          }
+        }
+    }
+  }
   return smallestC;
 }
 
 circle f3(list<point> l, point p, point q){
   int n = l.length();
-  // Debug(n)
-  // Debug(p)
-  // Debug(q)
+   //Debug(n)
+   //Debug(p)
+   //Debug(q)
   int i=0;
   point r;
   point cent = midpoint(p,q);
   circle C = circle(cent,p);
   for(i=0;i<n;i++){
     r=l.pop();
-    if(!C.inside(r) && !C.contains(r)){
+    if(!C.inside(r)){
+    	//cout<<r<<endl;
       C = circle(p,q,r);
     }
   }
