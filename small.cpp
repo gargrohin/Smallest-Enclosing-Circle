@@ -17,7 +17,7 @@ circle trivial(list<point> l){
   // Debug(n)
   for(int i = 0; i < n; i++) v.push_back(l.pop());
   circle smallestC;double rmin = 1000000.0;
-  for(int i = 0; i < n-2; i++){
+  /*for(int i = 0; i < n-2; i++){
     for(int j = i+1; j < n-1; j++){
       for(int k = j+1; k < n; k++){
         if(orientation(v[i],v[j],v[k])==0){
@@ -62,7 +62,7 @@ circle trivial(list<point> l){
           }
         }
     }
-  }
+  }*/
   return smallestC;
 }
 
@@ -77,6 +77,7 @@ circle f3(list<point> l, point p, point q){
   circle C = circle(cent,p);
   for(i=0;i<n;i++){
     r=l.pop();
+    if(orientation(p,q,r)==0) continue;
     if(!C.inside(r)){
     	//cout<<r<<endl;
       C = circle(p,q,r);
@@ -135,10 +136,10 @@ circle f1(list<point> l){
 int main(){
   srand (time(NULL));
   list<point> l; 
-  int npoints = 500;
+  int npoints = 10000000;
   for(int i=0; i< npoints; i++){
-    int a = rand()%20000;
-    int b = rand()%20000;
+    int a = rand();
+    int b = rand();
     point p(a,b);
     l.push(p);
   }
@@ -154,7 +155,7 @@ int main(){
   cout<<C.center()<<" "<<C.radius()<<endl;
 
 
-  auto t11 = std::chrono::high_resolution_clock::now();
+  /*auto t11 = std::chrono::high_resolution_clock::now();
   circle AC = trivial(l);
   auto t21 = std::chrono::high_resolution_clock::now();
   
@@ -162,11 +163,11 @@ int main(){
   cout << "\n The actual smallest circle is  : \n";
   cout<<AC.center()<<" "<<AC.radius()<<endl;
   cout << "It passes thru : "<< AC<<"\n\n";
-
+*/
   std::cout << "Randomized Algo took "
             << std::chrono::duration_cast<std::chrono::milliseconds>(t2-t1).count()
             << " milliseconds\n";
-
+/*
   std::cout << "Trivial O(n^4) took "
             << std::chrono::duration_cast<std::chrono::milliseconds>(t21-t11).count()
             << " milliseconds\n";
