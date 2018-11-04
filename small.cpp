@@ -13,11 +13,12 @@ using namespace std;
 // int rand();
 circle trivial(list<point> l){
   int n = l.length();
+  cout<<n<<endl;
   std::vector<point> v;
   // Debug(n)
   for(int i = 0; i < n; i++) v.push_back(l.pop());
   circle smallestC;double rmin = 1000000.0;
-  /*for(int i = 0; i < n-2; i++){
+  for(int i = 0; i < n-2; i++){
     for(int j = i+1; j < n-1; j++){
       for(int k = j+1; k < n; k++){
         if(orientation(v[i],v[j],v[k])==0){
@@ -62,7 +63,7 @@ circle trivial(list<point> l){
           }
         }
     }
-  }*/
+  }
   return smallestC;
 }
 
@@ -136,7 +137,7 @@ circle f1(list<point> l){
 int main(){
   srand (time(NULL));
   list<point> l; 
-  int npoints = 10000000;
+  int npoints = 100;
   for(int i=0; i< npoints; i++){
     int a = rand();
     int b = rand();
@@ -155,20 +156,20 @@ int main(){
   cout<<C.center()<<" "<<C.radius()<<endl;
 
 
-  /*auto t11 = std::chrono::high_resolution_clock::now();
-  circle AC = trivial(l);
-  auto t21 = std::chrono::high_resolution_clock::now();
+  //auto t11 = std::chrono::high_resolution_clock::now();
+  //circle AC = trivial(l);
+  //auto t21 = std::chrono::high_resolution_clock::now();
   
   
-  cout << "\n The actual smallest circle is  : \n";
-  cout<<AC.center()<<" "<<AC.radius()<<endl;
-  cout << "It passes thru : "<< AC<<"\n\n";
-*/
+ // cout << "\n The actual smallest circle is  : \n";
+ // cout<<AC.center()<<" "<<AC.radius()<<endl;
+ // cout << "It passes thru : "<< AC<<"\n\n";
+
   std::cout << "Randomized Algo took "
-            << std::chrono::duration_cast<std::chrono::milliseconds>(t2-t1).count()
-            << " milliseconds\n";
-/*
-  std::cout << "Trivial O(n^4) took "
+            << std::chrono::duration_cast<std::chrono::microseconds>(t2-t1).count()
+            << " microseconds\n";
+
+ /* std::cout << "Trivial O(n^4) took "
             << std::chrono::duration_cast<std::chrono::milliseconds>(t21-t11).count()
             << " milliseconds\n";
   // // point p1,p2,p3;
